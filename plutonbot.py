@@ -20,10 +20,11 @@ logger = logging.getLogger(__name__)
 MEMBERS, RECOMMENDATIONS, FINALOBJECT = range(3)
 
 
-custom_keyboard = [InlineKeyboardButton('Rolenzo',callback_data='Rolenzo'),InlineKeyboardButton('Raffaele',callback_data='Raffaele'),
+custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo'),InlineKeyboardButton('Raffaele',callback_data='Raffaele'),
     InlineKeyboardButton('Zacco',callback_data='Zacco'),InlineKeyboardButton('Endeavor',callback_data='Endeavor'),
     InlineKeyboardButton('Ma D.',callback_data='Mad D.'),InlineKeyboardButton('John Smith',callback_data='John Smith'),
-    InlineKeyboardButton('Plutone',callback_data='Plutone'),InlineKeyboardButton('Tutti',callback_data='Tutti'),InlineKeyboardButton('Alberto',callback_data='Alberto')]
+    InlineKeyboardButton('Plutone',callback_data='Plutone'),InlineKeyboardButton('Tutti',callback_data='Tutti'),
+    InlineKeyboardButton('Alberto',callback_data='Alberto')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
