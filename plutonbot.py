@@ -4,7 +4,7 @@ import logging
 import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Bot
-from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
 
 
 # Example of your code beginning
