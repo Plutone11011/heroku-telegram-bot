@@ -7,7 +7,7 @@ import telegram, telegram.ext
 # Example of your code beginning
 #           Config vars
 token = os.environ['TELEGRAM_TOKEN']
-port = os.environ['PORT']
+port = int(os.environ['PORT'])
 
 #some_api_token = os.environ['SOME_API_TOKEN'
 
@@ -36,12 +36,10 @@ def add(bot, update):
 
 def main():
 
-    bot = telegram.Bot(token=token)
-    bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
-    # Create the EventHandler and pass it your bot's token.
-    updater = telegram.ext.Updater(token=token)
-    updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
+    updater = telegram.ext.Updater(token)
+    updater.start_webhook(listen="0.0.0.0",port=port, url_path=token)
     updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
+
 
 
     # Get the dispatcher to register handlers
