@@ -37,7 +37,7 @@ def add(bot, update):
     return MEMBERS
 
 def member(bot,update):
-    print(update.message.reply_text)
+    bot.send_message(chat_id=update.message.chat_id, text=update.message.reply_text)
     return ConversationHandler.END
 
 def cancel(update, context):
