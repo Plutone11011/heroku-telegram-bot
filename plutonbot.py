@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
-import telegram, telegram.ext
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Bot
+from telegram.ext import Updater, CommandHandler
 
 
 # Example of your code beginning
@@ -32,7 +33,6 @@ def add(bot, update):
     reply_markup = ReplyKeyboardMarkup(custom_keyboard,one_time_keyboard=True)
     chosen_member = bot.send_message(chat_id=update.message.chat_id, text="Choose the person you want to advise", reply_markup=reply_markup)
     #return MEMBERS
-    print(chosen_member)
 
 def main():
 
