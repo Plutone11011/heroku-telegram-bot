@@ -36,7 +36,7 @@ def add(bot, update):
 
 def main():
 
-    updater = telegram.ext.Updater(token)
+    updater = Updater(token)
     updater.start_webhook(listen="0.0.0.0",port=port, url_path=token)
     updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
 
