@@ -1,8 +1,25 @@
-{   "Rolenzo":{},
-    "Raffaele":{},
-    "Endeavor":{},
-    "Plutone":{},
-    "Ma D.":{},
-    "John Smith":{},
-    "Zacco":{}
+{   "Rolenzo":{
+        "isBeingRecommended": false
+    },
+    "Raffaele":{
+        "isBeingRecommended": false
+    },
+    "Endeavor":{
+        "isBeingRecommended": false
+    },
+    "Plutone":{
+        "isBeingRecommended": false
+    },
+    "Ma D.":{
+        "isBeingRecommended": false
+    },
+    "John Smith":{
+        "isBeingRecommended": false
+    },
+    "Zacco":{
+        "isBeingRecommended": false
+    },
+    "Alberto":{
+        "isBeingRecommended": false
+    }
 }

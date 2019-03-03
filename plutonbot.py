@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Bot
+import json
+
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Bot
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 
 
@@ -15,10 +17,15 @@ port = int(os.environ['PORT'])
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MEMBERS, RECOMMENDATIONS = range(2)
+MEMBERS, RECOMMENDATIONS, FINALOBJECT = range(3)
 
-custom_keyboard = [['Rolenzo','Raffaele'], ['Zacco',"Endeavor"],["Ma D.","John Smith"],["Plutone","Tutti"]]
-reply_markup = ReplyKeyboardMarkup(custom_keyboard,one_time_keyboard=True)
+
+custom_keyboard = [InlineKeyboardButton('Rolenzo',callback_data='Rolenzo'),InlineKeyboardButton('Raffaele',callback_data='Raffaele'),
+    InlineKeyboardButton('Zacco',callback_data='Zacco'),InlineKeyboardButton('Endeavor',callback_data='Endeavor'),
+    InlineKeyboardButton('Ma D.',callback_data='Mad D.'),InlineKeyboardButton('John Smith',callback_data='John Smith'),
+    InlineKeyboardButton('Plutone',callback_data='Plutone'),InlineKeyboardButton('Tutti',callback_data='Tutti'),InlineKeyboardButton('Alberto',callback_data='Alberto')]
+reply_markup = InlineKeyboardMarkup(custom_keyboard)
+
 
 #every callback must feature bot and update as positional arguments
 def help(bot,update):
@@ -26,19 +33,45 @@ def help(bot,update):
     'Here\'s a list of available commands\n '+
     '/add - give an advice to a friend\n'+    
     '/remove - cancel a wrong recommendation. You don\'t want them to think you have shit taste!'+
-    '/get - visualize the recommendations your friends made for you'    )
+    '/get - visualize the recommendations your friends made for you')
 
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 def add(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Choose the person you want to advise", reply_markup=reply_markup)
+    update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup)
     return MEMBERS
 
-def member(bot,update):
-    bot.send_message(chat_id=update.message.chat_id, text=update.message.reply_text)
+def member(bot,update,user_data):
+    with open('data_sources\recommendations') as infile:
+        user_data = json.load(infile)
+    #if the chosen user hasn't yet received any advice from the current user, then an empty list is istantiated
+    if not user_data[update.callback_query.data][update.callback_query.from_user.username]:
+        user_data[update.callback_query.data][update.callback_query.from_user.username] = []
+
+    user_data[update.callback_query.data][isBeingRecommended] = True 
+    with open('data_sources\recommendations', 'w') as outfile:
+        json.dump(user_data, outfile)
+    
+    return RECOMMENDATIONS
+
+def rec(bot,update):
+    update.message.reply_text('Type in something to suggest to the victim')
+    return FINALOBJECT
+
+def fin(bot,update,user_data):
+    for recommendedDude in user_data:
+        if recommendedDude[isBeingRecommended]:
+            recommendedDude[update.message.from_user.username].append(update.message.text)
+            recommendedDude[isBeingRecommended] = False
+    
+    with open('data_sources\recommendations', 'w') as outfile:
+        json.dump(user_data, outfile)
+    
     return ConversationHandler.END
+
+
 
 def cancel(update, context):
     user = update.message.from_user
@@ -62,7 +95,9 @@ def main():
         entry_points=[CommandHandler('add', add)],
 
         states={
-            MEMBERS : [MessageHandler(Filters.text, member)]
+            MEMBERS : [CallbackQueryHandler(callback=member,pass_user_data=True)],
+            RECOMMENDATIONS : [MessageHandler(filters=Filters.text, callback=rec)],
+            FINALOBJECT : [MessageHandler(filters=Filters.text, callback=fin,pass_user_data=True)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
