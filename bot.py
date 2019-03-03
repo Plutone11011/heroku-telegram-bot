@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
-from telegram.ext import Updater, RegexHandler, ConversationHandler, CommandHandler, MessageHandler, Filters 
+import telegram 
 
 # Example of your code beginning
 #           Config vars
