@@ -37,12 +37,12 @@ def main():
     bot = telegram.Bot(token=token)
     bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
     # Create the EventHandler and pass it your bot's token.
-    updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
-    updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
+    telegram.ext.updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
+    telegram.ext.updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
 
 
     # Get the dispatcher to register handlers
-    dp = updater.dispatcher
+    dp = telegram.ext.updater.dispatcher
 
 
     # need to handle keyboard response
@@ -69,7 +69,7 @@ def main():
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
-    updater.idle()
+    telegram.ext.updater.idle()
 
 if __name__ == '__main__':
     main()
