@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
-import telegram 
+import telegram, telegram.ext
+
 
 # Example of your code beginning
 #           Config vars
 token = os.environ['TELEGRAM_TOKEN']
 port = os.environ['PORT']
+
 #some_api_token = os.environ['SOME_API_TOKEN'
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -37,12 +39,13 @@ def main():
     bot = telegram.Bot(token=token)
     bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
     # Create the EventHandler and pass it your bot's token.
-    telegram.ext.updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
-    telegram.ext.updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
+    updater = telegram.ext.Updater(token=token)
+    updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
+    updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
 
 
     # Get the dispatcher to register handlers
-    dp = telegram.ext.updater.dispatcher
+    dp = updater.dispatcher
 
 
     # need to handle keyboard response
@@ -69,7 +72,7 @@ def main():
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
-    telegram.ext.updater.idle()
+    updater.idle()
 
 if __name__ == '__main__':
     main()
