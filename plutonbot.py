@@ -2,7 +2,7 @@
 import os
 import logging
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Bot
-from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler
+from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 
 
 # Example of your code beginning
