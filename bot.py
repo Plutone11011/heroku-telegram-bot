@@ -7,6 +7,7 @@ from telegram.ext import Updater, RegexHandler, ConversationHandler, CommandHand
 # Example of your code beginning
 #           Config vars
 token = os.environ['TELEGRAM_TOKEN']
+port = os.environ['PORT']
 #some_api_token = os.environ['SOME_API_TOKEN'
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -33,8 +34,12 @@ def add(bot, update):
     print(chosen_member)
 
 def main():
+
+    bot = telegram.Bot(token=token)
+    bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater(token=token) #updater fetches new update from telegram, passing it to the dispatcher class
+    updater.start_webhook(listen="0.0.0.0", port=port,url_path=token)
+    updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
 
 
     # Get the dispatcher to register handlers
@@ -61,9 +66,6 @@ def main():
     dp.add_handler(CommandHandler('help', help))    
     # log all errors
     dp.add_error_handler(error)
-
-    # Start the Bot
-    updater.start_polling()
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
