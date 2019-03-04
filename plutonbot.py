@@ -24,14 +24,14 @@ MEMBERS, RECOMMENDATIONS = range(2)
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
     r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false, recs:[]}',
-        "Raffaele":'{"isBeingRecommended":false,recs:[]}',
-        "Endeavor":'{"isBeingRecommended":false,recs:[]}',
-        "Plutone":'{"isBeingRecommended":false,recs:[]}',
-        "MaD":'{"isBeingRecommended":false,recs:[]}',
-        "Alberto":'{"isBeingRecommended":false,recs:[]}',
-        "John_Smith":'{"isBeingRecommended":false,recs:[]}',
-        "Zacco":'{"isBeingRecommended":false,recs:[]}'})
+        "Rolenzo":'{"isBeingRecommended":false, "recs":[]}',
+        "Raffaele":'{"isBeingRecommended":false,"recs":[]}',
+        "Endeavor":'{"isBeingRecommended":false,"recs":[]}',
+        "Plutone":'{"isBeingRecommended":false,"recs":[]}',
+        "MaD":'{"isBeingRecommended":false,"recs":[]}',
+        "Alberto":'{"isBeingRecommended":false,"recs":[]}',
+        "John_Smith":'{"isBeingRecommended":false,"recs":[]}',
+        "Zacco":'{"isBeingRecommended":false,"recs":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
