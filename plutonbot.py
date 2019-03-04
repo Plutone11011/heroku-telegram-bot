@@ -45,12 +45,12 @@ def add(bot, update):
     return MEMBERS
 
 def member(bot,update,user_data):
-    with open('data_sources\recommendations') as infile:
+    with open('data_sources/recommendations') as infile:
         user_data = json.load(infile)
     #if the chosen user hasn't yet received any advice from the current user, then an empty list is istantiated
 
     user_data[update.callback_query.data][isBeingRecommended] = True 
-    with open('data_sources\recommendations', 'w') as outfile:
+    with open('data_sources/recommendations', 'w') as outfile:
         json.dump(user_data, outfile)
         bot.sendMessage(str(user_data))
     
@@ -95,9 +95,9 @@ def main():
         entry_points=[CommandHandler('add', add)],
 
         states={
-            MEMBERS : [CallbackQueryHandler(callback=member,pass_user_data=True)],
-            RECOMMENDATIONS : [MessageHandler(filters=Filters.text, callback=rec)],
-            FINALOBJECT : [MessageHandler(filters=Filters.text, callback=fin,pass_user_data=True)]
+            MEMBERS : [CallbackQueryHandler(member,pass_user_data=True)],
+            RECOMMENDATIONS : [MessageHandler(Filters.text, rec)],
+            FINALOBJECT : [MessageHandler(Filters.text, fin,pass_user_data=True)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
