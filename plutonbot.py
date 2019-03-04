@@ -47,7 +47,8 @@ def help(bot,update):
     update.message.reply_text('Hi, I\'m a bot. I will help you recommend stuff you like to your friends.\n' +
     'Here\'s a list of available commands\n '+
     '/add - give an advice to a friend\n'+
-    '/get - visualize the recommendations your friends made for you')
+    '/get - visualize the recommendations your friends made for you\n'+
+    '/cancel - if you changed your mind and want to stop an ongoing operation')
 
 def error(bot, update, error):
     """Log Errors caused by Updates."""
@@ -87,7 +88,7 @@ def fin(bot,update):
             recommendations_as_dict["recs"].append(update.message.text + '@' + update.message.from_user.username)
             recommendations_as_dict["isBeingRecommended"] = False
             r_server.set(user,json.dumps(recommendations_as_dict))
-    
+    update.message.reply_text("If you want to keep adding recommendations type /get, or /get to view them. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
 def get(bot, update):
@@ -115,12 +116,21 @@ def getRec(bot, update):
                     out += r + ' by ' + '<b>'+ recommender +'</b>'+ '\n'
                     update.callback_query.message.reply_text(out,parse_mode='HTML')
                 out = '' #need to empty it for other users
+    update.callback_query.message.reply_text("If you want to keep viewing recommendations type /get, or /add to contribute. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
 def cancel(update, context):
-    user = update.message.from_user
-    logger.info("User %s canceled the conversation.", user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.', reply_markup=ReplyKeyboardRemove())
+
+    #in case the user has decided to cancel the adding operation between adding the person and the item
+    #need to update the flag to leave the db in a consistent state
+    for user in json.loads(r_server.get("users")):
+        recommendations_as_dict = json.loads(r_server.get(user))
+        recommendations_as_dict["isBeingRecommended"] = False
+        r_server.set(user,json.dumps(recommendations_as_dict))
+
+
+
+    update.message.reply_text('Bye! I hope we can talk again some day.')
     return ConversationHandler.END
 
 def main():
