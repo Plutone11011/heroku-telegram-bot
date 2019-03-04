@@ -87,9 +87,12 @@ def get(bot, update):
     return GET
 
 def getRec(bot, update):
+    out = ''
     recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
-    rec, user = recommendations_as_dict["recs"].split("@")
-    update.callback_query.message.reply_text(rec + ' by ' + user)
+    for rec in recommendations_as_dict["recs"]:
+        r, user = rec.split("@")
+        out += r + ' by ' + user + '\n'
+    update.callback_query.message.reply_text(out)
     return ConversationHandler.END
 
 def cancel(update, context):
