@@ -31,7 +31,7 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+    r_server.msetnx({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
         "Rolenzo":'{"isBeingRecommended":false, "recs":[]}',
         "Raffaele":'{"isBeingRecommended":false,"recs":[]}',
         "Endeavor":'{"isBeingRecommended":false,"recs":[]}',
