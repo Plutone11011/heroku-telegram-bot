@@ -105,10 +105,12 @@ def getRec(bot, update):
     else:
         for user in json.loads(r_server.get("users")):
             recommendations_as_dict = json.loads(r_server.get(user))
+            out = '<b>'+ user + '</b>' + '\n'
             for rec in recommendations_as_dict["recs"]:
-                r, user = rec.split("@")
-                out += r + ' by ' + user + '\n'
-                update.callback_query.message.reply_text(out)
+                r, recommender = rec.split("@")
+                out += r + ' by ' + '<b>'+ recommender +'</b>'+ '\n'
+                update.callback_query.message.reply_text(out,parse_mode='HTML')
+            out = '' #need to empty it for other users
     return ConversationHandler.END
 
 def cancel(update, context):
