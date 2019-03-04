@@ -25,7 +25,7 @@ custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[In
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
     [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
     [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
-    [InlineKeyboardButton('Tutti',callback_data='Tutti')]]
+    [InlineKeyboardButton('Everyone',callback_data='Everyone')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
@@ -60,7 +60,7 @@ def add(bot, update):
 
 def member(bot,update):
 
-    if update.callback_query.data != 'Tutti':
+    if update.callback_query.data != 'Everyone':
         #search for the right person to return recommendations thanks to the callback_data of the inline keyboard buttons
         recommendations = r_server.get(update.callback_query.data)
         #parse it and return a python dictionary
@@ -88,7 +88,7 @@ def fin(bot,update):
             recommendations_as_dict["recs"].append(update.message.text + '@' + update.message.from_user.username)
             recommendations_as_dict["isBeingRecommended"] = False
             r_server.set(user,json.dumps(recommendations_as_dict))
-    update.message.reply_text("If you want to keep adding recommendations type /get, or /get to view them. Type /help if you're unsure of what to do")
+    update.message.reply_text("If you want to keep adding recommendations type /add, or /get to view them. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
 def get(bot, update):
@@ -97,7 +97,7 @@ def get(bot, update):
 
 def getRec(bot, update):
     out = ''
-    if update.callback_query.data != 'Tutti':
+    if update.callback_query.data != 'Everyone':
         recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
         if recommendations_as_dict["recs"]:
             for rec in recommendations_as_dict["recs"]:
@@ -119,7 +119,7 @@ def getRec(bot, update):
     update.callback_query.message.reply_text("If you want to keep viewing recommendations type /get, or /add to contribute. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
-def cancel(update, context):
+def cancel(bot, update):
 
     #in case the user has decided to cancel the adding operation between adding the person and the item
     #need to update the flag to leave the db in a consistent state
