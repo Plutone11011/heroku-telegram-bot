@@ -18,14 +18,8 @@ r_server = redis.from_url(os.environ['REDIS_URL'])
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MEMBERS, RECOMMENDATIONS, FINALOBJECT = range(3)
+MEMBERS, RECOMMENDATIONS = range(2)
 
-
-custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
-    [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
-    [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],]
-reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
@@ -53,6 +47,11 @@ def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 def add(bot, update):
+    custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
+        [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
+        [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
+        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],]
+    reply_markup = InlineKeyboardMarkup(custom_keyboard)    
     update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup)
     return MEMBERS
 
@@ -66,11 +65,8 @@ def member(bot,update):
     recommendations = json.dumps(recommendations_as_dict)
     r_server.set(update.callback_query.data,recommendations)
     
-    return RECOMMENDATIONS
-
-def rec(bot,update):
     update.message.reply_text('Type in something to suggest to the victim')
-    return FINALOBJECT
+    return RECOMMENDATIONS
 
 def fin(bot,update):
     #searches for the user who's actually being recommended in this conversation
@@ -110,8 +106,7 @@ def main():
 
         states={
             MEMBERS : [CallbackQueryHandler(member)],
-            RECOMMENDATIONS : [MessageHandler(Filters.text, rec)],
-            FINALOBJECT : [MessageHandler(Filters.text, fin)]
+            RECOMMENDATIONS : update.message.reply_text('Type in something to suggest to the victim') 
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
