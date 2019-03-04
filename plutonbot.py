@@ -65,7 +65,7 @@ def member(bot,update):
     recommendations = json.dumps(recommendations_as_dict)
     r_server.set(update.callback_query.data,recommendations)
     
-    update.message.reply_text('Type in something to suggest to the victim')
+    update.callback_query.message.reply_text('Type in something to suggest to the victim')
     return RECOMMENDATIONS
 
 def fin(bot,update):
