@@ -56,7 +56,7 @@ def add(bot, update):
     update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup)
     return MEMBERS
 
-def member(bot,update,user_data):
+def member(bot,update):
     #search for the right person to return recommendations thanks to the callback_data of the inline keyboard buttons
     recommendations = r_server.get(update.callback_query.data)
     #parse it and return a python dictionary
@@ -72,7 +72,7 @@ def rec(bot,update):
     update.message.reply_text('Type in something to suggest to the victim')
     return FINALOBJECT
 
-def fin(bot,update,user_data):
+def fin(bot,update):
     #searches for the user who's actually being recommended in this conversation
     #then applies the recommendation
     for user in json.loads(r_server.get("users")):
@@ -109,17 +109,15 @@ def main():
         entry_points=[CommandHandler('add', add)],
 
         states={
-            MEMBERS : [CallbackQueryHandler(member,pass_user_data=True)],
+            MEMBERS : [CallbackQueryHandler(member)],
             RECOMMENDATIONS : [MessageHandler(Filters.text, rec)],
-            FINALOBJECT : [MessageHandler(Filters.text, fin,pass_user_data=True)]
+            FINALOBJECT : [MessageHandler(Filters.text, fin)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
-    
-
-    dp.add_handler(CommandHandler('add',add))
+    dp.add_handler(add_conv_handler)
 
     dp.add_handler(CommandHandler('help', help))    
     # log all errors
