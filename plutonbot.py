@@ -31,7 +31,7 @@ def createRedisDB():
         "MaD":'{"isBeingRecommended":false,"Raffaele":[],"Rolenzo":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
         "Alberto":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}',
         "John_Smith":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"Alberto":[],"Endeavor":[]}',
-        "Zacco":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}'})
+        Zacco:'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
