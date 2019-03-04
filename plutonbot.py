@@ -24,14 +24,14 @@ MEMBERS, RECOMMENDATIONS = range(2)
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
     r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
-        "Raffaele":'{"isBeingRecommended":false,"Rolenzo":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
-        "Endeavor":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Rolenzo":[]}',
-        "Plutone":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Rolenzo":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
-        "MaD":'{"isBeingRecommended":false,"Raffaele":[],"Rolenzo":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
-        "Alberto":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}',
-        "John_Smith":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"Alberto":[],"Endeavor":[]}',
-        "Zacco":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}'})
+        "Rolenzo":'{"isBeingRecommended":false, recs:[]}',
+        "Raffaele":'{"isBeingRecommended":false,recs:[]}',
+        "Endeavor":'{"isBeingRecommended":false,recs:[]}',
+        "Plutone":'{"isBeingRecommended":false,recs:[]}',
+        "MaD":'{"isBeingRecommended":false,recs:[]}',
+        "Alberto":'{"isBeingRecommended":false,recs:[]}',
+        "John_Smith":'{"isBeingRecommended":false,recs:[]}',
+        "Zacco":'{"isBeingRecommended":false,recs:[]}'})
 
 
 #every callback must feature bot and update as positional arguments
@@ -74,7 +74,7 @@ def fin(bot,update):
     for user in json.loads(r_server.get("users")):
         recommendations_as_dict = json.loads(r_server.get(user)) 
         if recommendations_as_dict["isBeingRecommended"]:
-            recommendations_as_dict[update.message.from_user.username].append(update.message.text)
+            recommendations_as_dict[recs].append(update.message.text + '@' + update.message.from_user.username)
             recommendations_as_dict[isBeingRecommended] = False
             r.server.set(user,json.dumps(recommendations_as_dict))
     
