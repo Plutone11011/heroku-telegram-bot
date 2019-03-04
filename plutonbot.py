@@ -18,7 +18,14 @@ r_server = redis.from_url(os.environ['REDIS_URL'])
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MEMBERS, RECOMMENDATIONS = range(2)
+MEMBERS, FIN = range(2)
+GET = 0
+
+custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
+    [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
+    [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
+    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
+reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
 def createRedisDB():
@@ -46,12 +53,7 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
-def add(bot, update):
-    custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
-        [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
-        [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
-    reply_markup = InlineKeyboardMarkup(custom_keyboard)    
+def add(bot, update):    
     update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup)
     return MEMBERS
 
@@ -66,7 +68,7 @@ def member(bot,update):
     r_server.set(update.callback_query.data,recommendations)
     
     update.callback_query.message.reply_text('Type in something to suggest to the victim')
-    return RECOMMENDATIONS
+    return FIN
 
 def fin(bot,update):
     #searches for the user who's actually being recommended in this conversation
@@ -74,13 +76,21 @@ def fin(bot,update):
     for user in json.loads(r_server.get("users")):
         recommendations_as_dict = json.loads(r_server.get(user)) 
         if recommendations_as_dict["isBeingRecommended"]:
-            recommendations_as_dict[recs].append(update.message.text + '@' + update.message.from_user.username)
+            recommendations_as_dict["recs"].append(update.message.text + '@' + update.message.from_user.username)
             recommendations_as_dict[isBeingRecommended] = False
             r.server.set(user,json.dumps(recommendations_as_dict))
     
     return ConversationHandler.END
 
+def get(bot, update):
+    update.message.reply_text('Choose the person whose recommendations you want to see', reply_markup=reply_markup)
+    return GET
 
+def getRec(bot, update):
+    recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
+    rec, user = recommendations_as_dict["recs"].split("@")
+    update.callback_query.message.reply_text(rec + ' by ' + user)
+    return ConversationHandler.END
 
 def cancel(update, context):
     user = update.message.from_user
@@ -100,19 +110,29 @@ def main():
     dp = updater.dispatcher
 
 
-    # need to handle keyboard response
     add_conv_handler = ConversationHandler(
         entry_points=[CommandHandler('add', add)],
 
         states={
             MEMBERS : [CallbackQueryHandler(member)],
-            RECOMMENDATIONS : [MessageHandler(Filters.text, fin)]
+            FIN : [MessageHandler(Filters.text, fin)]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)]
+    )
+
+    get_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('get', get)],
+
+        states={
+            GET: [CallbackQueryHandler(getRec)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
     dp.add_handler(add_conv_handler)
+    dp.add_handler(get_conv_handler)
 
     dp.add_handler(CommandHandler('help', help))    
     # log all errors
