@@ -5,12 +5,13 @@ import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Bot
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
-
+import redis
 
 # Example of your code beginning
 #           Config vars
 token = os.environ['TELEGRAM_TOKEN']
 port = int(os.environ['PORT'])
+r_server = redis.from_url(os.environ['REDIS_URL'])
 
 #some_api_token = os.environ['SOME_API_TOKEN'
 
@@ -22,10 +23,21 @@ MEMBERS, RECOMMENDATIONS, FINALOBJECT = range(3)
 
 custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
-    [InlineKeyboardButton('Ma D.',callback_data='Mad D.')],[InlineKeyboardButton('John Smith',callback_data='John Smith')],
-    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
-    [InlineKeyboardButton('Tutti',callback_data='Tutti')]]
+    [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
+    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
+
+def createRedisDB():
+    #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
+    r_server.msetnx(users='["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+        Rolenzo='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
+        Raffaele='{"isBeingRecommended":false,"Rolenzo":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
+        Endeavor='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Rolenzo":[]}',
+        Plutone='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Rolenzo":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
+        MaD='{"isBeingRecommended":false,"Raffaele":[],"Rolenzo":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
+        Alberto='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}',
+        John_Smith='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"Alberto":[],"Endeavor":[]}',
+        Zacco='{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}')
 
 
 #every callback must feature bot and update as positional arguments
@@ -45,14 +57,14 @@ def add(bot, update):
     return MEMBERS
 
 def member(bot,update,user_data):
-    with open('data_sources/recommendations') as infile:
-        user_data = json.load(infile)
-    #if the chosen user hasn't yet received any advice from the current user, then an empty list is istantiated
-
-    user_data[update.callback_query.data][isBeingRecommended] = True 
-    with open('data_sources/recommendations', 'w') as outfile:
-        json.dump(user_data, outfile)
-        bot.sendMessage(str(user_data))
+    #search for the right person to return recommendations thanks to the callback_data of the inline keyboard buttons
+    recommendations = r_server.get(update.callback_query.data)
+    #parse it and return a python dictionary
+    recommendations_as_dict = json.loads(recommendations)
+    recommendations_as_dict["isBeingRecommended"] = True
+    #need to do the inverse and re-set the redis db with the flag set
+    recommendations = json.dumps(recommendations_as_dict)
+    r_server.set(update.callback_query.data,recommendations)
     
     return RECOMMENDATIONS
 
@@ -61,13 +73,14 @@ def rec(bot,update):
     return FINALOBJECT
 
 def fin(bot,update,user_data):
-    for recommendedDude in user_data:
-        if recommendedDude[isBeingRecommended]:
-            recommendedDude[update.message.from_user.username].append(update.message.text)
-            recommendedDude[isBeingRecommended] = False
-    
-    with open('data_sources\recommendations', 'w') as outfile:
-        json.dump(user_data, outfile)
+    #searches for the user who's actually being recommended in this conversation
+    #then applies the recommendation
+    for user in json.loads(r_server.get("users")):
+        recommendations_as_dict = json.loads(r_server.get(user)) 
+        if recommendations_as_dict["isBeingRecommended"]:
+            recommendations_as_dict[update.message.from_user.username].append(update.message.text)
+            recommendations_as_dict[isBeingRecommended] = False
+            r.server.set(user,json.dumps(recommendations_as_dict))
     
     return ConversationHandler.END
 
@@ -81,6 +94,7 @@ def cancel(update, context):
 
 def main():
 
+    createRedisDB()
     updater = Updater(token)
     updater.start_webhook(listen="0.0.0.0",port=port, url_path=token)
     updater.bot.setWebhook("https://advisorplutone.herokuapp.com/" + token)
