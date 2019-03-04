@@ -117,7 +117,7 @@ def getRec(bot, update):
                 update.callback_query.message.reply_text(out,parse_mode='HTML')
                 out = '' #need to empty it for other users
             else:
-                update.callback_query.message.reply_text('Seems like '+ '<b>'+user+'</b>' + 'doesn\'t have any recommendations. Sucks for him')
+                update.callback_query.message.reply_text('Seems like '+ '<b>'+user+'</b>' + 'doesn\'t have any recommendations. Sucks for him',parse_mode='HTML')
     update.callback_query.message.reply_text("If you want to keep viewing recommendations type /get, or /add to contribute. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
