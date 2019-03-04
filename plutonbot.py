@@ -23,7 +23,7 @@ MEMBERS, RECOMMENDATIONS = range(2)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.msetnx({"people":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
         "Rolenzo":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
         "Raffaele":'{"isBeingRecommended":false,"Rolenzo":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
         "Endeavor":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Rolenzo":[]}',
@@ -31,7 +31,7 @@ def createRedisDB():
         "MaD":'{"isBeingRecommended":false,"Raffaele":[],"Rolenzo":[],"Plutone":[],"Zacco":[],"Alberto":[],"John_Smith":[],"Endeavor":[]}',
         "Alberto":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}',
         "John_Smith":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Zacco":[],"Rolenzo":[],"Alberto":[],"Endeavor":[]}',
-        Zacco:'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}'})
+        "Zacco":'{"isBeingRecommended":false,"Raffaele":[],"MaD":[],"Plutone":[],"Alberto":[],"Rolenzo":[],"John_Smith":[],"Endeavor":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
@@ -50,7 +50,7 @@ def add(bot, update):
     custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
         [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
         [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],]
+        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
     reply_markup = InlineKeyboardMarkup(custom_keyboard)    
     update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup)
     return MEMBERS
