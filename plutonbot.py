@@ -33,7 +33,7 @@ def help(bot,update):
     update.message.reply_text('Hi, I\'m a bot. I will help you recommend stuff you like to your friends.\n' +
     'Here\'s a list of available commands\n '+
     '/add - give an advice to a friend\n'+    
-    '/remove - cancel a wrong recommendation. You don\'t want them to think you have shit taste!'+
+    '/remove - cancel a wrong recommendation. You don\'t want them to think you have shit taste!\n'+
     '/get - visualize the recommendations your friends made for you')
 
 def error(bot, update, error):
@@ -52,6 +52,7 @@ def member(bot,update,user_data):
     user_data[update.callback_query.data][isBeingRecommended] = True 
     with open('data_sources\recommendations', 'w') as outfile:
         json.dump(user_data, outfile)
+        bot.sendMessage(str(user_data))
     
     return RECOMMENDATIONS
 
