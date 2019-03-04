@@ -24,7 +24,8 @@ GET = 0
 custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
     [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
+    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
+    [InlineKeyboardButton('Tutti',callback_data='Tutti')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
@@ -45,8 +46,7 @@ def createRedisDB():
 def help(bot,update):
     update.message.reply_text('Hi, I\'m a bot. I will help you recommend stuff you like to your friends.\n' +
     'Here\'s a list of available commands\n '+
-    '/add - give an advice to a friend\n'+    
-    '/remove - cancel a wrong recommendation. You don\'t want them to think you have shit taste!\n'+
+    '/add - give an advice to a friend\n'+
     '/get - visualize the recommendations your friends made for you')
 
 def error(bot, update, error):
@@ -58,14 +58,22 @@ def add(bot, update):
     return MEMBERS
 
 def member(bot,update):
-    #search for the right person to return recommendations thanks to the callback_data of the inline keyboard buttons
-    recommendations = r_server.get(update.callback_query.data)
-    #parse it and return a python dictionary
-    recommendations_as_dict = json.loads(recommendations)
-    recommendations_as_dict["isBeingRecommended"] = True
-    #need to do the inverse and re-set the redis db with the flag set
-    recommendations = json.dumps(recommendations_as_dict)
-    r_server.set(update.callback_query.data,recommendations)
+
+    if update.callback_query.data != 'Tutti':
+        #search for the right person to return recommendations thanks to the callback_data of the inline keyboard buttons
+        recommendations = r_server.get(update.callback_query.data)
+        #parse it and return a python dictionary
+        recommendations_as_dict = json.loads(recommendations)
+        recommendations_as_dict["isBeingRecommended"] = True
+        #need to do the inverse and re-set the redis db with the flag set
+        recommendations = json.dumps(recommendations_as_dict)
+        r_server.set(update.callback_query.data,recommendations)
+    else:
+        for user in json.loads(r_server.get("users")):
+            recommendations_as_dict = json.loads(r_server.get(user))
+            recommendations_as_dict["isBeingRecommended"] = True
+            recommendations = json.dumps(recommendations_as_dict)
+            r_server.set(user,recommendations)
     
     update.callback_query.message.reply_text('Type in something to suggest to the victim')
     return FIN
@@ -88,11 +96,19 @@ def get(bot, update):
 
 def getRec(bot, update):
     out = ''
-    recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
-    for rec in recommendations_as_dict["recs"]:
-        r, user = rec.split("@")
-        out += r + ' by ' + user + '\n'
-    update.callback_query.message.reply_text(out)
+    if update.callback_query.data != 'Tutti':
+        recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
+        for rec in recommendations_as_dict["recs"]:
+            r, user = rec.split("@")
+            out += r + ' by ' + user + '\n'
+        update.callback_query.message.reply_text(out)
+    else:
+        for user in json.loads(r_server.get("users")):
+            recommendations_as_dict = json.loads(r_server.get(user))
+            for rec in recommendations_as_dict["recs"]:
+                r, user = rec.split("@")
+                out += r + ' by ' + user + '\n'
+                update.callback_query.message.reply_text(out)
     return ConversationHandler.END
 
 def cancel(update, context):
