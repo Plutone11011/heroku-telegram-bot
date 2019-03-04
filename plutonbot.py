@@ -106,7 +106,7 @@ def main():
 
         states={
             MEMBERS : [CallbackQueryHandler(member)],
-            RECOMMENDATIONS : update.message.reply_text('Type in something to suggest to the victim') 
+            RECOMMENDATIONS : [MessageHandler(Filters.text, fin)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
