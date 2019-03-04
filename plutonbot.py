@@ -78,7 +78,7 @@ def fin(bot,update):
         if recommendations_as_dict["isBeingRecommended"]:
             recommendations_as_dict["recs"].append(update.message.text + '@' + update.message.from_user.username)
             recommendations_as_dict["isBeingRecommended"] = False
-            r.server.set(user,json.dumps(recommendations_as_dict))
+            r_server.set(user,json.dumps(recommendations_as_dict))
     
     return ConversationHandler.END
 
