@@ -23,8 +23,8 @@ MEMBERS, RECOMMENDATIONS, FINALOBJECT = range(3)
 custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
     [InlineKeyboardButton('Ma D.',callback_data='Mad D.')],[InlineKeyboardButton('John Smith',callback_data='John Smith')],
-    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Tutti',callback_data='Tutti')],
-    [InlineKeyboardButton('Alberto',callback_data='Alberto')]]
+    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
+    [InlineKeyboardButton('Tutti',callback_data='Tutti')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
@@ -48,8 +48,6 @@ def member(bot,update,user_data):
     with open('data_sources\recommendations') as infile:
         user_data = json.load(infile)
     #if the chosen user hasn't yet received any advice from the current user, then an empty list is istantiated
-    if not user_data[update.callback_query.data][update.callback_query.from_user.username]:
-        user_data[update.callback_query.data][update.callback_query.from_user.username] = []
 
     user_data[update.callback_query.data][isBeingRecommended] = True 
     with open('data_sources\recommendations', 'w') as outfile:

@@ -1,25 +1,81 @@
 {   "Rolenzo":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "Raffaele":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Rolenzo":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "Endeavor":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Rolenzo":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "Plutone":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Rolenzo":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "Ma D.":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Rolenzo":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "John Smith":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "Rolenzo":[],
+        "Zacco":[],
+        "Alberto":[]
     },
     "Zacco":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Rolenzo":[],
+        "Alberto":[]
     },
     "Alberto":{
-        "isBeingRecommended": false
+        "isBeingRecommended": false,
+        "Raffaele":[],
+        "Endeavor":[],
+        "Plutone":[],
+        "Ma D.":[],
+        "John Smith":[],
+        "Zacco":[],
+        "Rolenzo":[]
     }
 }
