@@ -76,7 +76,7 @@ def member(bot,update):
             recommendations = json.dumps(recommendations_as_dict)
             r_server.set(user,recommendations)
     
-    update.callback_query.message.reply_text('Type in something to suggest to the victim')
+    update.callback_query.message.reply_text('Type in something to suggest to this normie')
     return FIN
 
 def fin(bot,update):
@@ -103,7 +103,7 @@ def getRec(bot, update):
             for rec in recommendations_as_dict["recs"]:
                 r, user = rec.split("@")
                 out += r + ' by ' + '<b>'+user+'</b>' + '\n'
-                update.callback_query.message.reply_text(out,parse_mode='HTML')
+            update.callback_query.message.reply_text(out,parse_mode='HTML')
         else:
             update.callback_query.message.reply_text("Ops, looks like there's nothing to see here")
     else:
@@ -114,8 +114,10 @@ def getRec(bot, update):
                 for rec in recommendations_as_dict["recs"]:
                     r, recommender = rec.split("@")
                     out += r + ' by ' + '<b>'+ recommender +'</b>'+ '\n'
-                    update.callback_query.message.reply_text(out,parse_mode='HTML')
+                update.callback_query.message.reply_text(out,parse_mode='HTML')
                 out = '' #need to empty it for other users
+            else:
+                update.callback_query.message.reply_text('Seems like '+ '<b>'+user+'</b>' + 'doesn\'t have any recommendations. Sucks for him')
     update.callback_query.message.reply_text("If you want to keep viewing recommendations type /get, or /add to contribute. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
