@@ -128,7 +128,7 @@ def rem(bot, update):
         [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
         [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
         [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
-    update.message.reply_text('Choose the person whose recommendations you want to remove', reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone.remove(custom_keyboard_without_everyone[-1])))
+    update.message.reply_text('Choose the person whose recommendations you want to remove', reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone))
     return LIST
 
 def get_list(bot, update):
