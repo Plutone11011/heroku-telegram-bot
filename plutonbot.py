@@ -126,7 +126,7 @@ def getRec(bot, update):
 def rem(bot, update):
     custom_keyboard_without_everyone = list(reply_markup)
     update.message.reply_text('Choose the person whose recommendations you want to remove',
-        reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone.remove(reply_markup_without_everyone[-1])))
+        reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone.remove(custom_keyboard_without_everyone[-1])))
     return LIST
 
 def get_list(bot, update):
