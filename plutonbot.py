@@ -124,9 +124,11 @@ def getRec(bot, update):
     return ConversationHandler.END
 
 def rem(bot, update):
-    custom_keyboard_without_everyone = list(reply_markup)
-    update.message.reply_text('Choose the person whose recommendations you want to remove',
-        reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone.remove(custom_keyboard_without_everyone[-1])))
+    custom_keyboard_without_everyone = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
+        [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
+        [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
+        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
+    update.message.reply_text('Choose the person whose recommendations you want to remove', reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone.remove(custom_keyboard_without_everyone[-1])))
     return LIST
 
 def get_list(bot, update):
