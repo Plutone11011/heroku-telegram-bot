@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 MEMBERS, FIN = range(2)
 GET = 0
+LIST, REMOVE = range(2)
 
 custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
@@ -32,14 +33,14 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
     r_server.msetnx({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false, "recs":[]}',
-        "Raffaele":'{"isBeingRecommended":false,"recs":[]}',
-        "Endeavor":'{"isBeingRecommended":false,"recs":[]}',
-        "Plutone":'{"isBeingRecommended":false,"recs":[]}',
-        "MaD":'{"isBeingRecommended":false,"recs":[]}',
-        "Alberto":'{"isBeingRecommended":false,"recs":[]}',
-        "John_Smith":'{"isBeingRecommended":false,"recs":[]}',
-        "Zacco":'{"isBeingRecommended":false,"recs":[]}'})
+        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":[]}',
+        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
@@ -48,6 +49,7 @@ def help(bot,update):
     'Here\'s a list of available commands\n '+
     '/add - give an advice to a friend\n'+
     '/get - visualize the recommendations your friends made for you\n'+
+    '/remove - remove a recommendation from your list'+
     '/cancel - if you changed your mind and want to stop an ongoing operation')
 
 def error(bot, update, error):
@@ -121,6 +123,39 @@ def getRec(bot, update):
     update.callback_query.message.reply_text("If you want to keep viewing recommendations type /get, or /add to contribute. Type /help if you're unsure of what to do")
     return ConversationHandler.END
 
+def rem(bot, update):
+    reply_markup_without_everyone = InlineKeyboardMarkup(custom_keyboard.remove(custom_keyboard[-1]))
+    update.message.reply_text('Choose the person you want to advise', reply_markup=reply_markup_without_everyone)
+    return LIST
+
+def get_list(bot, update):
+    recommendations_as_dict = json.loads(r_server.get(update.callback_query.data))
+    if recommendations_as_dict["recs"]:
+        recommendations_as_dict["isBeingCanceled"] = True
+        keyboard_of_recommendations = [[InlineKeyboardButton(rec,callback_data=rec)] for rec in recommendations_as_dict["recs"] if len(rec) < 64]
+        r_server.set(update.callback_query.data,json.dumps(recommendations_as_dict))
+        update.callback_query.message.reply_text("Choose the thing you want to remove",reply_markup=InlineKeyboardMarkup(keyboard_of_recommendations))
+        return REMOVE
+    else: 
+        update.callback_query.message.reply_text("Your list is empty, I'm sorry")
+        return ConversationHandler.END
+
+
+
+def do_removal(bot, update):
+
+    for user in json.loads(r_server.get("users")):
+        recommendations_as_dict = json.loads(r_server.get(user))
+        if recommendations_as_dict["isBeingCanceled"]:
+            recommendations_as_dict["recs"].remove(update.callback_query.data)
+            recommendations_as_dict["isBeingCanceled"] = False
+            r_server.set(user,json.dumps(recommendations_as_dict))
+        
+
+    update.callback_query.message.reply_text("If you want to keep removing recommendations type /remove, or /get to view them. Type /help if you're unsure of what to do")
+    return ConversationHandler.END
+
+
 def cancel(bot, update):
 
     #in case the user has decided to cancel the adding operation between adding the person and the item
@@ -128,6 +163,7 @@ def cancel(bot, update):
     for user in json.loads(r_server.get("users")):
         recommendations_as_dict = json.loads(r_server.get(user))
         recommendations_as_dict["isBeingRecommended"] = False
+        recommendations_as_dict["isBeingCanceled"] = False
         r_server.set(user,json.dumps(recommendations_as_dict))
 
 
@@ -167,6 +203,17 @@ def main():
 
         fallbacks=[CommandHandler('cancel', cancel)]
     )
+
+    remove_comnv_handler = ConversationHandler(
+        entry_points=[CommandHandler('remove', rem)],
+
+        states={
+            LIST: [CallbackQueryHandler(get_list)],
+            REMOVE: [[CallbackQueryHandler(do_removal)]]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)]
+    ) 
 
     dp.add_handler(add_conv_handler)
     dp.add_handler(get_conv_handler)
