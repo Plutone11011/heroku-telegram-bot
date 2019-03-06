@@ -149,11 +149,11 @@ def do_removal(bot, update):
 
     if update.callback_query.data:
         for user in json.loads(r_server.get("users")):
-        recommendations_as_dict = json.loads(r_server.get(user))
-        if recommendations_as_dict["isBeingCanceled"]:
-            recommendations_as_dict["recs"].remove(update.callback_query.data)
-            recommendations_as_dict["isBeingCanceled"] = False
-            r_server.set(user,json.dumps(recommendations_as_dict))
+            recommendations_as_dict = json.loads(r_server.get(user))
+            if recommendations_as_dict["isBeingCanceled"]:
+                recommendations_as_dict["recs"].remove(update.callback_query.data)
+                recommendations_as_dict["isBeingCanceled"] = False
+                r_server.set(user,json.dumps(recommendations_as_dict))
         
 
     update.callback_query.message.reply_text("If you want to keep removing recommendations type /remove, or /get to view them. Type /help if you're unsure of what to do")
