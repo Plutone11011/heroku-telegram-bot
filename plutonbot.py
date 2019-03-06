@@ -32,15 +32,15 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.msetnx({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":[]}',
-        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
+    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Monogatari@Plutone2","I giorni della sposa@JohnSmithh","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Last Exile@dplissken"]}',
+        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
+        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Rwby@Plutone2","Tatami Galaxy@KanbaruTool"]}',
+        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Garden of the Sinners@OkabeJoestar","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Last Exile@dplissken","Ping Pong the animation@KanbaruTool"]}',
+        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Emergence@dplissken","Fatti una vita@Endeav0r","Shinsekai Yori@JohnSmithh","Last Exile@dplissken","Mob Psycho 100@dplissken"]}',
+        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Emergence@dplissken","Shinsekai Yori@JohnSmithh","Last Exile@dplissken"]}',
+        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken"]}',
+        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["fullmetal alchemist@Plutone2","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Last Exile@dplissken"]}'})
 
 
 #every callback must feature bot and update as positional arguments
