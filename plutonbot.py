@@ -213,7 +213,7 @@ def main():
 
         states={
             LIST: [CallbackQueryHandler(get_list)],
-            REMOVE: [[CallbackQueryHandler(do_removal)]]
+            REMOVE: [CallbackQueryHandler(do_removal)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
