@@ -138,16 +138,17 @@ def get_list(bot, update):
         keyboard_of_recommendations = [[InlineKeyboardButton(rec,callback_data=rec)] for rec in recommendations_as_dict["recs"] if len(rec) < 64]
         r_server.set(update.callback_query.data,json.dumps(recommendations_as_dict))
         update.callback_query.message.reply_text("Choose the thing you want to remove",reply_markup=InlineKeyboardMarkup(keyboard_of_recommendations))
-        return REMOVE
     else: 
         update.callback_query.message.reply_text("Your list is empty, I'm sorry")
-        return ConversationHandler.END
+    
+    return REMOVE
 
 
 
 def do_removal(bot, update):
 
-    for user in json.loads(r_server.get("users")):
+    if update.callback_query.data:
+        for user in json.loads(r_server.get("users")):
         recommendations_as_dict = json.loads(r_server.get(user))
         if recommendations_as_dict["isBeingCanceled"]:
             recommendations_as_dict["recs"].remove(update.callback_query.data)
