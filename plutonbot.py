@@ -204,7 +204,7 @@ def main():
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
-    remove_comnv_handler = ConversationHandler(
+    remove_conv_handler = ConversationHandler(
         entry_points=[CommandHandler('remove', rem)],
 
         states={
@@ -217,6 +217,7 @@ def main():
 
     dp.add_handler(add_conv_handler)
     dp.add_handler(get_conv_handler)
+    dp.add_handler(remove_conv_handler)
 
     dp.add_handler(CommandHandler('help', help))    
     # log all errors
