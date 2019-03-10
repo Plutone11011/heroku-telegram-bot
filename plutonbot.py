@@ -26,13 +26,13 @@ custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[In
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
     [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
     [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
-    [InlineKeyboardButton('Everyone',callback_data='Everyone')]]
+    [InlineKeyboardButton('Nocciolina',callback_data='Nocciolina')],[InlineKeyboardButton('Everyone',callback_data='Everyone')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone","Nocciolina"]',
         "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Monogatari@Plutone2","I giorni della sposa@JohnSmithh"]}',
         "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
         "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Rwby@Plutone2","Tatami Galaxy@KanbaruTool"]}',
@@ -128,7 +128,8 @@ def rem(bot, update):
     custom_keyboard_without_everyone = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
         [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
         [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')]]
+        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
+        [InlineKeyboardButton('Nocciolina',callback_data='Nocciolina')]]
     update.message.reply_text('Choose the person whose recommendations you want to remove', reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone))
     return LIST
 
