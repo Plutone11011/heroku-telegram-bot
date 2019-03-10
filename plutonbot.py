@@ -32,15 +32,16 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.msetnx({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":[]}',
-        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
-        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
+    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone"]',
+        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Monogatari@Plutone2","I giorni della sposa@JohnSmithh"]}',
+        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
+        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Rwby@Plutone2","Tatami Galaxy@KanbaruTool"]}',
+        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Ping Pong the animation@KanbaruTool","Garden of the sinners@Plutone2"]}',
+        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Shinsekai Yori@JohnSmithh","Mob Psycho 100@dplissken"]}',
+        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
+        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken"]}',
+        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","fullmetal alchemist@Plutone2"]}',
+        "Nocciolina":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
@@ -49,7 +50,7 @@ def help(bot,update):
     'Here\'s a list of available commands\n '+
     '/add - give an advice to a friend\n'+
     '/get - visualize the recommendations your friends made for you\n'+
-    '/remove - remove a recommendation from your list'+
+    '/remove - remove a recommendation from your list\n'+
     '/cancel - if you changed your mind and want to stop an ongoing operation')
 
 def error(bot, update, error):
