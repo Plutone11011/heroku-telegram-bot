@@ -32,15 +32,15 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito","Zacco","Plutone"]',
-        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh","I giorni della sposa@JohnSmithh"]}',
-        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Aku no Hana@JohnSmithh"]}',
-        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh","Tatami galaxy@KanbaruTool","Rwby@Plutone2"]}',
-        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Garden of the Sinners@OkabeJoestar","Fate Apocrypha@OkabeJoestar","Aku no Hana@JohnSmithh","Ping pong the animation@KanbaruTool"]}',
-        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh"]}',
-        "Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken"]}',
-        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Love live@dplissken"]}',
-        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","fullmetal alchemist@Plutone2"]}'})
+    r_server.msetnx({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito","Zacco","Plutone"]',
+        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":[]}',
+        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}',
+        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
 
 
 #every callback must feature bot and update as positional arguments
