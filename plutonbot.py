@@ -32,16 +32,15 @@ reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def createRedisDB():
     #creates a set of redis key-value pairs with json-like string as values, if the keys don't exist already
-    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Alberto","Zacco","Plutone","Nocciolina"]',
-        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Monogatari@Plutone2","I giorni della sposa@JohnSmithh"]}',
-        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
-        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Rwby@Plutone2","Tatami Galaxy@KanbaruTool"]}',
-        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Ping Pong the animation@KanbaruTool","Garden of the sinners@Plutone2"]}',
-        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Shinsekai Yori@JohnSmithh","Mob Psycho 100@dplissken"]}',
-        "Alberto":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh"]}',
-        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken"]}',
-        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","fullmetal alchemist@Plutone2"]}',
-        "Nocciolina":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":[]}'})
+    r_server.mset({"users":'["Rolenzo","John_Smith","Endeavor","Raffaele","MaD","Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito","Zacco","Plutone"]',
+        "Rolenzo":'{"isBeingRecommended":false, "isBeingCanceled":false, "recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh","I giorni della sposa@JohnSmithh"]}',
+        "Raffaele":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Shinsekai Yori@JohnSmithh","Aku no Hana@JohnSmithh"]}',
+        "Endeavor":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh","Tatami galaxy@KanbaruTool","Rwby@Plutone2"]}',
+        "Plutone":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Garden of the Sinners@OkabeJoestar","Fate Apocrypha@OkabeJoestar","Aku no Hana@JohnSmithh","Ping pong the animation@KanbaruTool"]}',
+        "MaD":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Aku no Hana@JohnSmithh","Shinsekai Yori@JohnSmithh"]}',
+        "Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken"]}',
+        "John_Smith":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Love live@dplissken"]}',
+        "Zacco":'{"isBeingRecommended":false,"isBeingCanceled":false,"recs":["Last Exile@dplissken","Emergence@dplissken","Aku no Hana@JohnSmithh","fullmetal alchemist@Plutone2"]}'})
 
 
 #every callback must feature bot and update as positional arguments
