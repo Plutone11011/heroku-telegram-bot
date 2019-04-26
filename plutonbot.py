@@ -25,8 +25,8 @@ LIST, REMOVE = range(2)
 custom_keyboard = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
     [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
     [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
-    [InlineKeyboardButton('Nocciolina',callback_data='Nocciolina')],[InlineKeyboardButton('Everyone',callback_data='Everyone')]]
+    [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito',callback_data='Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito')],
+    [InlineKeyboardButton('Everyone',callback_data='Everyone')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 
@@ -127,8 +127,8 @@ def rem(bot, update):
     custom_keyboard_without_everyone = [[InlineKeyboardButton('Rolenzo',callback_data='Rolenzo')],[InlineKeyboardButton('Raffaele',callback_data='Raffaele')],
         [InlineKeyboardButton('Zacco',callback_data='Zacco')],[InlineKeyboardButton('Endeavor',callback_data='Endeavor')],
         [InlineKeyboardButton('MaD',callback_data='MaD')],[InlineKeyboardButton('John_Smith',callback_data='John_Smith')],
-        [InlineKeyboardButton('Plutone',callback_data='Plutone')],[InlineKeyboardButton('Alberto',callback_data='Alberto')],
-        [InlineKeyboardButton('Nocciolina',callback_data='Nocciolina')]]
+        [InlineKeyboardButton('Plutone',callback_data='Plutone')],
+        [InlineKeyboardButton('Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito',callback_data='Mario Rossi [ universo beta ] Spirito di S.Pietro smarrito')]]
     update.message.reply_text('Choose the person whose recommendations you want to remove', reply_markup=InlineKeyboardMarkup(custom_keyboard_without_everyone))
     return LIST
 
