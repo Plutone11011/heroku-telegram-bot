@@ -176,10 +176,10 @@ def cancel(bot, update):
     update.message.reply_text('Bye! I hope we can talk again some day.')
     return ConversationHandler.END
 
-def temp(bot, update):
-    logger.info("This is the message: %s",update.message.from_user)
-    if update.message.from_user.first_name == 'Hak' or update.message.from_user.username == 'dplissken':
-        update.message.reply_text("Hak non rompere i coglioni e guarda Free")
+#def temp(bot, update):
+#    logger.info("This is the message: %s",update.message.from_user)
+#    if update.message.from_user.first_name == 'Hak' or update.message.from_user.username == 'dplissken':
+#        update.message.reply_text("Hak non rompere i coglioni e guarda Free")
 
 def main():
 
