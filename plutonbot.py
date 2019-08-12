@@ -230,7 +230,7 @@ def main():
     dp.add_handler(remove_conv_handler)
 
     dp.add_handler(CommandHandler('help', help))
-    dp.add_handler(MessageHandler(Filters.text,temp))
+    #dp.add_handler(MessageHandler(Filters.text,temp))
     # log all errors
     dp.add_error_handler(error)
 
