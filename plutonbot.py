@@ -176,6 +176,9 @@ def cancel(bot, update):
     update.message.reply_text('Bye! I hope we can talk again some day.')
     return ConversationHandler.END
 
+def temp(bot, update):
+    logger.info("This is the message: %s",update.message.text)
+
 def main():
 
     createRedisDB()
@@ -224,7 +227,8 @@ def main():
     dp.add_handler(get_conv_handler)
     dp.add_handler(remove_conv_handler)
 
-    dp.add_handler(CommandHandler('help', help))    
+    dp.add_handler(CommandHandler('help', help))
+    dp.add_handler(MessageHandler(Filters.text,temp))
     # log all errors
     dp.add_error_handler(error)
 
