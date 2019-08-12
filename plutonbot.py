@@ -177,7 +177,7 @@ def cancel(bot, update):
     return ConversationHandler.END
 
 def temp(bot, update):
-    logger.info("This is the message: %s",update.message.text)
+    logger.info("This is the message: %s",update.message.from_user)
     if update.message.from_user == 'Hak':
         update.message.reply_text("Hak non rompere i coglioni e guarda Free")
 
